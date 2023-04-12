@@ -9,6 +9,11 @@ import PageChange from "components/PageChange/PageChange.js";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "styles/tailwind.css";
 
+import Script from "next/script";
+import * as gtag from "lib/gtag";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+
 Router.events.on("routeChangeStart", (url) => {
   console.log(`Loading: ${url}`);
   document.body.classList.add("body-page-transition");
@@ -63,9 +68,37 @@ export default class MyApp extends App {
 
     const Layout = Component.layout || (({ children }) => <>{children}</>);
 
+    const router = useRouter();
+    useEffect(() => {
+      const handleRouterChange = (url) => {
+        gtag.pageview(url);
+      };
+      router.events.on("routeChangeComplete", handleRouterChange);
+      return () => {
+        router.events.off("routeChangeComplete", handleRouterChange);
+      };
+    }, [router.events]);
+
     return (
       <React.Fragment>
         <Head>
+          <Script
+            strategy="afterInteractive"
+            src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_MEASUREMENT_ID}`}
+          />
+          <Script
+            id="gtag-init"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+           window.dataLayer = window.dataLayer || [];
+           function gtag(){dataLayer.push(arguments);}
+           gtag('js', new Date());
+ 
+           gtag('config', '${gtag.GA_MEASUREMENT_ID}');
+           `,
+            }}
+          />
           {/*TODO Edit*/}
           <meta
             name="viewport"
