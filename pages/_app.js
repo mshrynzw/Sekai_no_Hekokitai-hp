@@ -67,18 +67,7 @@ export default class MyApp extends App {
     const { Component, pageProps } = this.props;
 
     const Layout = Component.layout || (({ children }) => <>{children}</>);
-
-    const router = useRouter();
-    useEffect(() => {
-      const handleRouterChange = (url) => {
-        gtag.pageview(url);
-      };
-      router.events.on("routeChangeComplete", handleRouterChange);
-      return () => {
-        router.events.off("routeChangeComplete", handleRouterChange);
-      };
-    }, [router.events]);
-
+    
     return (
       <React.Fragment>
         <Head>
