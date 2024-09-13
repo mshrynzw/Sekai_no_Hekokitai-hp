@@ -77,12 +77,12 @@ export default function Sidebar() {
             <ul className="md:flex-col md:min-w-full flex flex-col list-none">
               <li className="items-center">
                 {/*TODO EDIT Change links*/}
-                <Link href="/">
+                <Link href="/chart">
                   <a
                     className="text-blueGray-500 hover:text-blueGray-300 text-xs uppercase py-3 font-bold block"
                   >
                     <i className="fas fa-chart-line text-blueGray-100 w-5 mr-2 text-sm"></i>{" "}
-                    ADIPO (May 1, 2023...)
+                    Chart
                   </a>
                 </Link>
               </li>
